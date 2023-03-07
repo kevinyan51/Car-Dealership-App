@@ -2,8 +2,8 @@
 
 Team:
 
-* Person 1 - Which microservice?
-* Person 2 - Which microservice?
+* Kevin Yan - Which microservice? Service
+* Yi Li - Which microservice? Sales
 
 ## Design
 

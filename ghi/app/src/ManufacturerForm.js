@@ -1,9 +1,9 @@
-import React, { useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 function ManufacturerForm(){
     const [name, setName] = useState('');
 
-    const handelNameChange = event => {
+    const handleNameChange = event => {
         const value = event.target.value
         setName(value)
     }
@@ -39,7 +39,7 @@ function ManufacturerForm(){
             <h1>Create a manufacturer</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-floating mb-3">
-                <input value={name} onChange={handelNameChange} id="name" placeholder="name" required type="text" className="form-control"/>
+                <input value={name} onChange={handleNameChange} id="name" placeholder="name" required type="text" className="form-control"/>
                 <label>Name</label>
               </div>
               <button className="btn btn-primary">Create</button>

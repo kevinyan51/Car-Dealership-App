@@ -14,7 +14,7 @@ function Nav() {
               <NavLink className="nav-link" to="/manufacturer">Manufacturer</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/manufacturer/new">Create a manufacturer</NavLink>
+              <NavLink className="nav-link" to="/manufacturer/new">New Manufacturer</NavLink>
             </li>
           </ul>
         </div>

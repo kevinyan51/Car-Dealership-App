@@ -8,7 +8,7 @@ import VehicleList from './VehicleList';
 
 import AutomobileForm from './AutomobileForm';
 import AutomobileList from './AutomobileList';
-
+import TechnicianForm from './TechnicianForm';
 import SalesPersonList from './SalesPersonList';
 import SalesPersonForm from './SalesPersonForm';
 
@@ -32,6 +32,7 @@ function App() {
             <Route path='' element={<AutomobileList />} />
             <Route path="/automobile/new" element={<AutomobileForm />} />
           </Route>
+          <Route path='/technician' element={<TechnicianForm />} />
           <Route path="/salesperson" >
             <Route path='' element={<SalesPersonList />} />
             <Route path="/salesperson/new" element={<SalesPersonForm />} />

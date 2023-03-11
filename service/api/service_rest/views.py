@@ -12,6 +12,8 @@ class AutomobileVOEncoder(ModelEncoder):
     properties = [
         'vin',
         'import_href',
+        'vip',
+        'id',
     ]
 
 
@@ -31,11 +33,13 @@ class ServiceAppointmentEncoder(ModelEncoder):
         'time',
         'reason',
         'technician',
-        'vin'
+        'vin',
+        'id',
+        'completed',
+        'vip',
     ]
     encoders={
         'technician': TechnicianListEncoder(),
-        'vin': AutomobileVOEncoder(),
     }
 
 
@@ -56,6 +60,14 @@ def api_list_technicians(request):
             safe=False,
         )
 
+@require_http_methods(["DELETE"])
+def api_detail_technician(request, pk):
+    if request.method == 'DELETE':
+        count, _ = Technician.objects.filter(id=pk).delete()
+        return JsonResponse({"deleted": count > 0})
+
+
+
 
 @require_http_methods(["GET", "POST"])
 def api_list_appointment(request):
@@ -67,19 +79,42 @@ def api_list_appointment(request):
         )
     else:
         content = json.loads(request.body)
+        if AutomobileVO.objects.filter(vin=content['vin']).exists():
+            content['vip'] = True
+        content['vip'] = False
         try:
-            vin = AutomobileVO.objects.get(vin=content['vin'])
-            content['vin'] = vin
-            technician = Technician.objects.get(employee_number=content['technician'])
+            technician = Technician.objects.get(name=content['technician'])
             content['technician'] = technician
-            appointment = ServiceAppointment.objects.create(**content)
-        except AutomobileVO.DoesNotExist:
+        except Technician.DoesNotExist:
             return JsonResponse(
-                {"message": 'Invalid vin Id'},
+                {"message": 'Invalid Technician Person'},
                  status=400,
             )
+        appointment = ServiceAppointment.objects.create(**content)
         return JsonResponse(
                 appointment,
                 encoder=ServiceAppointmentEncoder,
                 safe=False,
             )
+
+@require_http_methods(["DELETE", "PUT", "GET"])
+def api_appointment_delete(request, pk):
+    if request.method == "GET":
+        appointment = ServiceAppointment.get(id=pk)
+        return JsonResponse(
+            appointment,
+            encoder=ServiceAppointmentEncoder,
+            safe=False,
+        )
+    elif request.method == "DELETE":
+        count, _ = ServiceAppointment.objects.filter(id=pk).delete()
+        return JsonResponse({"deleted": count > 0})
+    else:
+        content = json.loads(request.body)
+        ServiceAppointment.objects.filter(id=pk).update(**content)
+        appointment = ServiceAppointment.objects.get(id=pk)
+        return JsonResponse(
+            appointment,
+            encoder=ServiceAppointmentEncoder,
+            safe=False,
+        )

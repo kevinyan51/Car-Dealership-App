@@ -71,6 +71,7 @@ function AutomobileForm(){
         <div className="row">
             <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
+                <h1>Create a automobile</h1>
                 <form onSubmit={handleSubmit} >
                 <div className="form-floating mb-3">
                     <input onChange={handleColorChange} value={color} placeholder="Color" required type="text" name="color" id="color" className="form-control" />

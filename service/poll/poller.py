@@ -21,14 +21,11 @@ def get_automobiles():
             import_href=automobile["href"],
             defaults={
                 "vin": automobile['vin'],
-                "year": automobile['year'],
-                "color": automobile['color'],
             }
         )
 
 def poll():
     while True:
-        print('Service poller polling for data')
         try:
             get_automobiles()
         except Exception as e:

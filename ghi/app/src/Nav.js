@@ -32,10 +32,19 @@ function Nav() {
               <NavLink className="nav-link" to="/technician">New Technician</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/salesperson">Sales Person</NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink className="nav-link" to="/salesperson/new">New Sales Person</NavLink>
+            </li>
+            <li>
+              <NavLink className="nav-link" to="/customer/new">New Customer</NavLink>
+            </li>
+            <li>
+              <NavLink className="nav-link" to="/salerecord/new">New Sale Record</NavLink>
+            </li>
+            <li>
+              <NavLink className="nav-link" to="/saleslist">Sales List</NavLink>
+            </li>
+            <li>
+              <NavLink className="nav-link" to="/saleshistorylist">Sales History</NavLink>
             </li>
           </ul>
         </div>

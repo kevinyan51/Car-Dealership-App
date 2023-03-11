@@ -7,6 +7,7 @@ class AutomobileVO(models.Model):
     vin = models.CharField(max_length=17, unique=True)
     color = models.CharField(max_length=50, default=None)
     year = models.PositiveSmallIntegerField(default=None)
+    sold = models.BooleanField(default=False)
 
     def get_api_url(self):
         return reverse("api_automobile", kwargs={"vin": self.vin})
@@ -44,7 +45,7 @@ class SaleRecord(models.Model):
          on_delete=models.CASCADE,
      )
 
-     vin = models.ForeignKey(
+     automobile = models.ForeignKey(
          'AutomobileVO',
          related_name='salerecord',
          on_delete=models.CASCADE,

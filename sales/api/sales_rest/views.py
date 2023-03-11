@@ -11,6 +11,8 @@ class AutomobileVODetailEncoder(ModelEncoder):
     properties = [
         "import_href",
         "vin",
+        "sold",
+        "id",
     ]
 
 
@@ -39,15 +41,19 @@ class SaleRecordListEncoder(ModelEncoder):
         "price",
         "customer",
         "sales_person",
-        "vin",
+        "automobile",
         "id",
     ]
     encoders = {
         "sales_person": SalesPersonListEncoder(),
         "customer": CustomerListEncoder(),
-        "vin": AutomobileVODetailEncoder(),
+        "automobile": AutomobileVODetailEncoder(),
     }
 
+@require_http_methods(["GET"])
+def api_list_automobilesVO(request):
+    automobiles = AutomobileVO.objects.all()
+    return JsonResponse({"automobiles": automobiles}, encoder=AutomobileVODetailEncoder)
 
 
 @require_http_methods(["GET", "POST"])
@@ -92,23 +98,26 @@ def api_list_sale_record(request):
         content = json.loads(request.body)
 
         try:
-
-            sales_person = SalesPerson.objects.get(id=content["sales_person"])
+            sales_person = SalesPerson.objects.get(name=content["sales_person"])
             content["sales_person"] = sales_person
-
 
             customer = Customer.objects.get(name=content["customer"])
             content["customer"] = customer
 
+            automobile = AutomobileVO.objects.get(vin=content["automobile"])
+            content["automobile"] = automobile
 
-            vin = AutomobileVO.objects.get(vin=content["vin"])
-            content["vin"] = vin
-            sale_record = SaleRecord.objects.create(**content)
+            if automobile.sold == False:
+                content["automobile"].sold = True
+                automobile.save()
+                sale_record = SaleRecord.objects.create(**content)
+
         except AutomobileVO.DoesNotExist:
             return JsonResponse(
-                {"message": "Invalid vin id"},
+                {"message": "Invalid automobile"},
                 status=400,
             )
+
         return JsonResponse(
             {"sales_record": sale_record},
             encoder=SaleRecordListEncoder,
